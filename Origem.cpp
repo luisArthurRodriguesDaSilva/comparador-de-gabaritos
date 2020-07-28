@@ -5,7 +5,7 @@ using namespace std;
 
 char alternativas1[1000];
 char alternativas2[1000];
-int x, tamanho;
+int i,x, tamanho;
 char linha;
 
 void revelador();
