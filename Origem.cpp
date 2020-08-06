@@ -4,13 +4,15 @@
 using namespace std;
 
 char armazenamento[9999][9999];
-int i,x, tamanho, p=0,Nprov;
+int i,x, tamanho, p=0,Nprov,j=0;
 char linha;
-char armDoVeri[9999];
+char armDoVeri;
+bool iguais[9999];
 
 void verificadorDecaracter();
 void armazenador();
 void armazenadorS();
+void comparador();
 void revelador();
 
 int main()
@@ -19,6 +21,10 @@ int main()
 
 	while (true)
 	{
+		p = 0;
+		while (p <= Nprov) { iguais[p] = false; p++; }
+		p = 0;
+
 		cout << "número de provas:";	cin >> Nprov;		cout << endl;   //obter numero de provas
 
 		cout << "tamanho das prova:";	cin >> tamanho;		cout << endl;	//obter tamanho
@@ -28,13 +34,18 @@ int main()
 
 		while (p < Nprov) {
 			verificadorDecaracter();										//vê se tem ou n
-			if (armDoVeri[p] == 's') armazenador(); else armazenadorS();	//armazenando c e sem sinal
+			if (armDoVeri == 's') armazenador(); 
+			else armazenadorS();											//armazenando c e sem sinal
 			p++;
 		}		
 
 		system("cls");//LIMPEZAAAAAAAAAAAAAAAAAA
 
+		comparador();
+
 		revelador();
+
+		cout << endl << endl;
 	}
 
 	return 0;
@@ -45,7 +56,7 @@ void verificadorDecaracter()
 	cout << "tem caracter entre o número e a letra na prova "<<p+1 <<"?"<< endl;
 
 	
-	cin >> armDoVeri[p]; cout << endl;
+	cin >> armDoVeri; cout << endl;
 
 	system("cls");
 }
@@ -70,12 +81,26 @@ void armazenadorS() {
 	system("cls");
 }
 
-void revelador() {
+void comparador() 
+{
+	for (p = 0; p < Nprov; p++)
+	{
+		for (i = 0; i < tamanho && iguais[j]==false;i++)
+		{
+			if (armazenamento[p][i] != armazenamento[p][i + 1])
+			{
+				iguais[p] = true; p = j;
+			}
+		}
 
+	}
+}
+
+void revelador() {
+	
 	for (x = 0 ; x < tamanho; x++)
 	{
-		if (armazenamento[p][x] == armazenamento[p + 1][x])cout << x + 1 << "-" << armazenamento[1][x] << endl;
-		
+		if (iguais[x])cout << x + 1 << "-" << armazenamento[1][x] << endl;
 		else 
 		{
 			cout << "||" << x + 1 << "[";
