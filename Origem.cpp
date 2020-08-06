@@ -3,92 +3,121 @@
 
 using namespace std;
 
-char alternativas1[1000];
-char alternativas2[1000];
-int i,x, tamanho;
+char armazenamento[9999][9999];
+int i,x, tamanho, p=0,Nprov,j=0;
 char linha;
-char verificadorDLinhas;
+char armDoVeri;
+bool iguais[9999];
 
+void verificadorDecaracter();
+void armazenador();
+void armazenadorS();
+void comparador();
 void revelador();
-void armazenador2();
-void armazenador1();
-void armazenador2S();
-void armazenador1S();
 
 int main()
 {
+	setlocale(LC_ALL, "");
 
 	while (true)
 	{
+		p = 0;
+		while (p <= Nprov) { iguais[p] = false; p++; }
+		p = 0;
 
-		setlocale(LC_ALL, "");
+		cout << "número de provas:";	cin >> Nprov;		cout << endl;   //obter numero de provas
 
-		cout << "tamanho da prova:"; cin >> tamanho; cout << endl;
-
-		system("cls");
-
-		cout << "tamanho:" << tamanho << endl<<endl;
+		cout << "tamanho das prova:";	cin >> tamanho;		cout << endl;	//obter tamanho
 
 
-		cout << "tem linha entre o número e a letra no primeiro?" << endl;
+		system("cls");//LIMPEZAAAAAAAAAAAAAAAAAA
 
-		cin >> verificadorDLinhas; cout << endl;
-		if (verificadorDLinhas == 's') armazenador1(); else armazenador1S();
-		system("cls");
-		
+		while (p < Nprov) {
+			verificadorDecaracter();										//vê se tem ou n
+			if (armDoVeri == 's') armazenador(); 
+			else armazenadorS();											//armazenando c e sem sinal
+			p++;
+		}		
 
-		cout << "tem linha entre o número e a letra no segundo?" << endl;
-		cin >> verificadorDLinhas; cout << endl;
-		if (verificadorDLinhas == 's')armazenador2(); else armazenador2S();
-		system("cls");
+		system("cls");//LIMPEZAAAAAAAAAAAAAAAAAA
+
+		comparador();
 
 		revelador();
+
+		cout << endl << endl;
 	}
 
 	return 0;
 }
 
-void armazenador1() {
+void verificadorDecaracter()
+{
+	cout << "tem caracter entre o número e a letra na prova "<<p+1 <<"?"<< endl;
+
+	
+	cin >> armDoVeri; cout << endl;
+
+	system("cls");
+}
+
+void armazenador() {
 
 	cout << "primeiro gabarito:" << endl;
 	for (x = 0; x < tamanho; x++) {
-		cin >> i >> linha >> alternativas1[x];
+		cin >> i >> linha >> armazenamento[p][x];
 	}
+
+	system("cls");
 
 }
 
-void armazenador1S() {
+void armazenadorS() {
 
 	cout << "primeiro gabarito:" << endl;
 	for (x = 0; x < tamanho; x++) {
-		cin >> i >> alternativas1[x];
+		cin >> i >> armazenamento[p][x];
 	}
-
+	system("cls");
 }
 
-
-void armazenador2() {
-	cout << "segundo gabarito:" << endl;
-	for (x = 0; x < tamanho; x++) {
-		cin >> i >> linha >> alternativas2[x];
-	}
-
-}
-void armazenador2S() {
-	cout << "segundo gabarito:" << endl;
-	for (x = 0; x < tamanho; x++) {
-		cin >> i >> alternativas2[x];
-	}
-
-}
-
-
-void revelador(){
-
-	for (x = 0; x < tamanho; x++)
+void comparador() 
+{
+	for (p = 0; p < Nprov; p++)
 	{
-		if (alternativas1[x] == alternativas2[x])cout << x+1 << "-" << alternativas1[x] << endl;
-		else cout <<"||"<< x+1<<"["<< alternativas1[x] << "|" << alternativas2[x]<<"]"<<endl;
+		for (i = 0; i < tamanho && iguais[j]==false;i++)
+		{
+			if (armazenamento[p][i] != armazenamento[p][i + 1])
+			{
+				iguais[p] = true; p = j;
+			}
+		}
+
+	}
+}
+
+void revelador() {
+	
+	for (x = 0 ; x < tamanho; x++)
+	{
+		if (iguais[x])cout << x + 1 << "-" << armazenamento[1][x] << endl;
+		else 
+		{
+			cout << "||" << x + 1 << "[";
+			//----------------------questões diferentes-----------------------
+			i = 0; p = 0;
+			while (i < Nprov) 
+			{
+				if (i < (Nprov - 1))cout << armazenamento[p + i][x] << "|";
+				else cout << armazenamento[p + i][x];
+				
+				
+				i++;
+			}
+			//--------------------------------------------------------------
+			cout << "]" << endl;
+		}
+	
 	}
 
 }
